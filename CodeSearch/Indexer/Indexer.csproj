@@ -207,8 +207,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CSUpdaterMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="temp.cs" />
+    <Compile Include="Updater.cs" />
     <Compile Include="WorkspaceHelpers.cs" />
   </ItemGroup>
   <ItemGroup>

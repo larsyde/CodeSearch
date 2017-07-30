@@ -4,10 +4,9 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using CSUpdater.Sentry;
 using NamedPipeWrapper;
 
-namespace CSUpdater.Console
+namespace CodeSearch
 {
     public class ProcessManager : IDisposable, IProcessManager
     {
@@ -59,7 +58,7 @@ namespace CSUpdater.Console
             pInfo.RedirectStandardOutput = true;
             pInfo.CreateNoWindow = true;
             pInfo.Arguments = $"{Process.GetCurrentProcess().Id},{pipeName}";
-            pInfo.FileName = "CSUpdater.Sentry.exe";
+            pInfo.FileName = "Sentry.exe";
             _sentryProcess = new Process();
             _sentryProcess.StartInfo = pInfo;
             "Starting sentry".Info();

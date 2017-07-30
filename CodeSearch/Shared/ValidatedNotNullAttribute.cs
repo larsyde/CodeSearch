@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CSUpdater.Console
+namespace CodeSearch
 {
     /// <summary>
     /// Prevent spurious argument null errors in code analysis

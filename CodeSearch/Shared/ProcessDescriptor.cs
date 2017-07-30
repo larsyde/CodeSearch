@@ -1,6 +1,6 @@
 using System;
 
-namespace CSUpdater.Sentry
+namespace CodeSearch
 {
     [Serializable]
     public class ProcessDescriptor 

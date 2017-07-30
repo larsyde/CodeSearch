@@ -8,11 +8,12 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Indexer</RootNamespace>
     <AssemblyName>Indexer</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -207,14 +208,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CSUpdaterMain.cs" />
+    <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Updater.cs" />
+    <Compile Include="Indexer.cs" />
     <Compile Include="WorkspaceHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.csproj">
@@ -230,4 +233,8 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\build\Microsoft.TeamFoundationServer.ExtendedClient.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\build\Microsoft.TeamFoundationServer.ExtendedClient.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>"$(SolutionDir)\dependencies\inserticons-master\bin\$(ConfigurationName)\inserticons.exe" "$(TargetPath)" "$(SolutionDir)Solution items"
+"$(SolutionDir)\Solution items\output_runmany.cmd" $(OutDir) "$(SolutionDir)" $(TargetName)</PostBuildEvent>
+  </PropertyGroup>
 </Project>

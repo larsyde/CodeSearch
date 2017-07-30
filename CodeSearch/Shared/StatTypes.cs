@@ -1,4 +1,4 @@
-namespace CSUpdater.Console
+namespace CodeSearch
 {
     public enum StatTypes
     {

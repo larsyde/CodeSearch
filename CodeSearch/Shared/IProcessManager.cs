@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 
-namespace CSUpdater.Console
+namespace CodeSearch
 {
     public interface IProcessManager
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using MadMilkman.Ini;
 
-namespace CSUpdater.Console
+namespace CodeSearch
 {
     public class Config
     {

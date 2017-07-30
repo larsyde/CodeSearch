@@ -1,3 +1,3 @@
-csupdater.console install
-csupdater.webhost.console install
+indexer install
+webhost install
 services.msc

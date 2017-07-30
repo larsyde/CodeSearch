@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Runtime.CompilerServices;
 
-namespace CSUpdater.Console
+namespace CodeSearch
 {
     /// <summary>
     /// checker methods to validate objects

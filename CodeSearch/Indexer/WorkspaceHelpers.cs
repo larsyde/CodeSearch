@@ -4,7 +4,7 @@ using System.IO;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace CSUpdater.Console
+namespace CodeSearch
 {
     public static class WorkspaceHelpers
     {

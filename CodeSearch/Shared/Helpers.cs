@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace CSUpdater
+namespace CodeSearch
 {
     public static class Helpers
     {

@@ -1,4 +1,4 @@
-namespace CSUpdater
+namespace CodeSearch
 {
     public class Globals
     {

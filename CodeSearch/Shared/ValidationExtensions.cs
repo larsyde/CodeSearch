@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-namespace CSUpdater.Console
+namespace CodeSearch
 {
     /// <summary>
     /// static class for extension methods

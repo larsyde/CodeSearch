@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+  <title>New</title>
+  <meta name="generator" content="Amaya, see http://www.w3.org/Amaya/" />
+  <style>
+.button { background-color : #f1f1f1 }
+.button { margin-left : 10px }
+.button { margin-right : 10px }
+.button { font:16px arial,sans-serif }
+.button { padding : 5px }
+
+</style>
+
+<script type="text/javascript" src="jquery-1.12.3.min.js"></script>
+<script type="text/javascript">
+// lucky button GET
+$(document).ready(function(){
+    $('#luckybutton').click(function(e) {
+        var inputvalue = $("#input").val();
+        window.location.replace("http://" + location.hostname + ":8102" + "/search?defs=&refs=&path=main/&hist=&type=&project=AllShared&project=Automation&project=BuildTeam&project=Consultancy&project=DriverDB&project=EventTeam&project=Explorer&project=License&project=MIPSDK&project=Marketing&project=SMS&project=WEB&project=XPCO&project=XPE&project=XPMO&project=XPSC&q="+inputvalue);
+  });
+});
+
+// advanced button GET
+$(document).ready(function(){
+    $('#advancedbutton').click(function(e) {
+        window.location.replace("http://" + location.hostname + ":8102" + "/index.jsp");
+  });
+});
+
+// press enter to go
+$(document).ready(function(){
+        $('#input').keypress(function(e){
+      if(e.keyCode==13)
+      $('#luckybutton').click();
+    });
+});
+
+</script>
+</head>
+
+
+<body onload="$('#input').focus()" style="background-color: white">
+<div id="outPopUp"
+style=
+"    position:absolute;
+     width:459px;
+     height:300px;
+text-align:center;
+     z-index:15;
+     top:50%;
+     left:50%;
+     margin:-150px 0 0 -250px;"
+>
+<p style="text-align:center;margin-left:auto;margin-right:auto;"><a href=".\index.html"><img
+alt="Codesearch logo" src="codesearch.png" width="459" height="110" /></a></p>
+
+<table border="0" style="width: 100%">
+  <caption></caption>
+  <col />
+  <tbody>
+    <tr>
+      <td style="text-align:center;margin-left:auto;margin-right:auto;"><input
+        style="width:459px" type="text" id="input"/></td>
+    </tr>
+    <tr>
+      <td></td>
+    </tr>
+    <tr style="text-align:center;margin-left:auto;margin-right:auto;">
+      <td>
+<input class="button" id="luckybutton" type="button" value="I'm feeling lucky" />
+<input class="button" id="advancedbutton" type="button" value="Advanced" />
+</td>
+   </tr>
+  </tbody>
+</table>
+</div>
+<div id="contact"
+     style=
+     "
+     font-family: Arial;
+     font-size: small;
+     color:#808080;
+     position: absolute;
+     width:fit-content;
+     height: fit-content;
+     text-align:right;
+     z-index:15;
+     margin: -2em 0em 0em -5em;
+     top:100%;
+     left:100%;"
+    >
+<a href="mailto:lay@milestone.dk?subject=codesearch" style="color: #808080">Contact</a></div>
+</body>
+</html>

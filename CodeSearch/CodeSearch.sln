@@ -9,6 +9,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Indexer", "Indexer\Indexer.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution items", "{9E0D47CD-1F78-4B74-B0AD-44C8C5BD0D2C}"
 	ProjectSection(SolutionItems) = preProject
+		Solution items\128x128.ico = Solution items\128x128.ico
+		Solution items\16x16.ico = Solution items\16x16.ico
+		Solution items\20x20.ico = Solution items\20x20.ico
+		Solution items\24x24.ico = Solution items\24x24.ico
+		Solution items\256x256.ico = Solution items\256x256.ico
+		Solution items\32x32.ico = Solution items\32x32.ico
+		Solution items\48x48.ico = Solution items\48x48.ico
+		Solution items\64x64.ico = Solution items\64x64.ico
+		Solution items\icon.ico = Solution items\icon.ico
 		Solution items\install.cmd = Solution items\install.cmd
 		Solution items\nlog.config = Solution items\nlog.config
 		Solution items\NLog.xsd = Solution items\NLog.xsd
@@ -17,6 +26,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{A21D3E6F-ED31-4F04-8C88-7FA159518311}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webhost", "Webhost\Webhost.csproj", "{71EB00E4-F36E-45BE-A999-D364446EFDA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentry", "Sentry\Sentry.csproj", "{40139F0F-63EB-470A-A9EC-1136812879AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +49,14 @@ Global
 		{A21D3E6F-ED31-4F04-8C88-7FA159518311}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A21D3E6F-ED31-4F04-8C88-7FA159518311}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A21D3E6F-ED31-4F04-8C88-7FA159518311}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71EB00E4-F36E-45BE-A999-D364446EFDA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71EB00E4-F36E-45BE-A999-D364446EFDA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71EB00E4-F36E-45BE-A999-D364446EFDA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71EB00E4-F36E-45BE-A999-D364446EFDA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40139F0F-63EB-470A-A9EC-1136812879AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40139F0F-63EB-470A-A9EC-1136812879AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40139F0F-63EB-470A-A9EC-1136812879AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40139F0F-63EB-470A-A9EC-1136812879AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

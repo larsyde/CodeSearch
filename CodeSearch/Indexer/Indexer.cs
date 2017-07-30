@@ -13,7 +13,8 @@ using StackExchange.Profiling;
 
 namespace CodeSearch
 {
-    public class Updater : ExtendedErrorHandler
+    // TODO: compose with an extendederrorhandler, dont inherit from it
+    public class Indexer : ExtendedErrorHandler
     {
         /*      public static readonly string[] Extensions =
               {

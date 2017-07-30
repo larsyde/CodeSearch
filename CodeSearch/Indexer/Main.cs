@@ -169,7 +169,7 @@ namespace CodeSearch
         }
 
     
-        private Updater _updater;
+        private Indexer _updater;
         private Thread _updaterThread;
 
 
@@ -186,7 +186,7 @@ namespace CodeSearch
             {
                 ConfigureExceptionHandling(hostControl);
                 _cancellationTokenSource = new CancellationTokenSource();
-                _updater = new Updater();
+                _updater = new Indexer();
                 _updaterThread = new Thread(() => _updater.Run(_cancellationTokenSource.Token))
                 {
                     Name = "UpdaterThread",

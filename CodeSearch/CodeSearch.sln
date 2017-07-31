@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webhost", "Webhost\Webhost.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentry", "Sentry\Sentry.csproj", "{40139F0F-63EB-470A-A9EC-1136812879AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Installer", "Installer\Installer.csproj", "{B61932E9-F6E3-452D-8BB3-5ACF40352B8E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{40139F0F-63EB-470A-A9EC-1136812879AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40139F0F-63EB-470A-A9EC-1136812879AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40139F0F-63EB-470A-A9EC-1136812879AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B61932E9-F6E3-452D-8BB3-5ACF40352B8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B61932E9-F6E3-452D-8BB3-5ACF40352B8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B61932E9-F6E3-452D-8BB3-5ACF40352B8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B61932E9-F6E3-452D-8BB3-5ACF40352B8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

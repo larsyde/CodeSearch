@@ -16,11 +16,6 @@ namespace CodeSearch
     // TODO: compose with an extendederrorhandler, dont inherit from it
     public class Indexer : ExtendedErrorHandler
     {
-        /*      public static readonly string[] Extensions =
-              {
-                  "cs"
-              };
-      */
 
 
         public static readonly string[] Extensions =

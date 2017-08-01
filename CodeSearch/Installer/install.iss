@@ -1,4 +1,4 @@
-﻿#include "services.iss"
+#include "services.iss"
 
 [Setup]
 AppName=Codesearch
@@ -18,8 +18,10 @@ Source: "*.*"; DestDir: "{app}"; Excludes: "*.log, *.pdb, *.xml, *.ini"; Flags: 
 Source: "*.xml"; DestDir: "{app}"; Flags: recursesubdirs onlyifdoesntexist
 Source: "*.ini"; DestDir: "{app}"; Flags: recursesubdirs onlyifdoesntexist
 
-
+ 
 [Run]
+Filename: "{app}\indexer.exe"; Parameters: "uninstall"; Flags: runhidden
+Filename: "{app}\webhost.exe"; Parameters: "uninstall"; Flags: runhidden
 Filename: "{app}\indexer.exe"; Parameters: "install -username:{code:GetUser|Username} -password:{code:GetUser|Password}"; Flags: runhidden
 Filename: "{app}\webhost.exe"; Parameters: "install -username:{code:GetUser|Username} -password:{code:GetUser|Password}"; Flags: runhidden
 Filename: "{app}\indexer.exe"; Parameters: "start"; Flags: runhidden
@@ -57,76 +59,14 @@ TmpDir : String;
 IniFile : String;
 AbortNow : Boolean;
 
-begin
-    UpdaterServiceName := 'Indexer';
-    WebhostServiceName := 'Webhost';
-    UpdaterServiceRes := ServiceExists(UpdaterServiceName);
-    WebhostServiceRes := ServiceExists(WebhostServiceName);
-          
-    if CurStep=ssInstall then
-    begin
-      if UpdaterServiceRes=True then
-      begin
-        SimpleStopService(UpdaterServiceName, True,True);
-      end;
-      if WebhostServiceRes=True then
-      begin
-        SimpleStopService(WebhostServiceName, True, True);
-      end;
-    end;
-
+begin 
+    UpdaterServiceName := 'CodeSearch updater service';
+    WebhostServiceName := 'CodeSearch.Webhost.Service';            
+ 
+    {remember: the services get uninstaller and installed again in the Run section higher up}
     if CurStep=ssPostInstall then 
     begin 
           Log('CurStepChanged ssPostInstall');
-          UpdaterServiceStatus := SimpleQueryService(UpdaterServiceName);
-          WebhostServiceStatus := SimpleQueryService(WebhostServiceName);
-          AbortNow := False;
-          if ((UpdaterServiceRes=True) and (UpdaterServiceStatus<>SERVICE_RUNNING)) or ((WebhostServiceRes=True) and (WebhostServiceStatus<>SERVICE_RUNNING)) then
-          begin
-              if MsgBox('Services could not be started. Please check service account credentials. Do you want to abort installation and remove services ?', mbConfirmation, MB_YESNO) = IDYES then
-              begin
-                  AbortNow := True;
-              end;
-          end;
-          {check if the services are installed ok. If not, clean up and leave}
-          if UpdaterServiceRes=False or WebhostServiceRes=False or AbortNow=True then
-          begin
-            if UpdaterServiceRes=True then
-            begin
-               SimpleDeleteService(UpdaterServiceName);
-               Log('Deleting ' + UpdaterServiceName);
-            end
-            else
-            begin
-               Log(UpdaterServiceName + ' does not exist');
-            end;
-            if WebhostServiceRes=True then
-            begin
-               SimpleDeleteService(WebhostServiceName);
-               Log('Deleting ' + WebhostServiceName);
-            end
-            else
-            begin
-              Log(WebhostServiceName + ' does not exist');
-            end;
-            Dir := ExpandConstant('{app}');
-            TmpDir := ExpandConstant('{tmp}');
-            Log('expanded installation dir : ' + Dir);
-            Log('expanded temp dir : ' + TmpDir);
-            DelTree(TmpDir, True, True, True);
-            if DelTree(Dir, True, True, True)=False then
-            begin
-               MsgBox('Could not delete installation directory: ' + Dir, mbCriticalError, MB_OK); 
-            end
-            else if AbortNow=False then
-            begin
-               MsgBox('Could not register services' , mbCriticalError, MB_OK);
-            end;
-            InfoPage := nil
-            WizardForm.Close();
-            Exit;
-          end;
-          {write relevant stuff to the ini file}
           Log('Writing ini settings');
           IniFile := ExpandConstant('{app}'+ '\settings.ini');
           Log('Writing settings to ' + IniFile);

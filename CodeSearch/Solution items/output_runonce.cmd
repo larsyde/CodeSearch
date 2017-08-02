@@ -6,8 +6,8 @@ pushd %_solutiondir%
 
 del /f/s/q output\*.* 
 
-robocopy . output nlog.config /xf *.log  /r:0  /is
-robocopy . output install.cmd /xf *.log  /r:0  /is
+robocopy ".\solution items" output nlog.config /xf *.log  /r:0  /is
+robocopy ".\solution items" output install.cmd /xf *.log  /r:0  /is
 
 robocopy Dependencies\ctags58\ output\bin ctags.exe /xf *.log  /r:0  /is
 robocopy Dependencies\jetty-runner-9.3.9.v20160517  output\lib  /xf *.log  /r:0  /is 

@@ -15,7 +15,7 @@ namespace CodeSearch.WebHost.Console
     {
         public const string LoggerName = @"Webhost";
 
-        private const string _pipeName = "CsWebHostPipetemp";
+        private const string _pipeName = "CsWebHostPipe";
 
         private  CancellationTokenSource _cancellationToken = new CancellationTokenSource();
         private readonly Lazy<IProcessManager> _processManager = new Lazy<IProcessManager>(() =>
@@ -227,8 +227,8 @@ namespace CodeSearch.WebHost.Console
                     configurator.Service<CsWebHost>();
                     configurator.RunAsNetworkService();
                     configurator.SetDescription("Serves out web pages with code search content");
-                    configurator.SetDisplayName(Globals.WebhostDisplayName + "temp");
-                    configurator.SetServiceName(Globals.WebhostServiceName + "temp");
+                    configurator.SetDisplayName(Globals.WebhostDisplayName);
+                    configurator.SetServiceName(Globals.WebhostServiceName);
                     configurator.UseNLog();
                     "Running webhost service".Info();
                 });

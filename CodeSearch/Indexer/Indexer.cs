@@ -18,13 +18,17 @@ namespace CodeSearch
     {
 
 
-        public static readonly string[] Extensions =
-        {
-            "txt", "cs", "config", "xml", "sql", "xaml", "manifest", "resx", "sln", "*proj", "wxs",
-            "java", "mak", "fakes", "*html", "*js", "*css", "C", "H", "rc", "log",
-            "CPP", "HPP", "CC", "C++", "HH", "CXX", "HXX", "TXX", "PDF", "", "m", "swift"
-        };
+        /*  public static readonly string[] Extensions =
+          {
+              "txt", "cs", "config", "xml", "sql", "xaml", "manifest", "resx", "sln", "*proj", "wxs",
+              "java", "mak", "fakes", "*html", "*js", "*css", "C", "H", "rc", "log",
+              "CPP", "HPP", "CC", "C++", "HH", "CXX", "HXX", "TXX", "PDF", "", "m", "swift"
+          };*/
 
+          public static readonly string[] Extensions =
+{
+  "txt"
+};
 
         private ProcessManager ProcessManager { get; } = new ProcessManager("CSUpdaterPipeTemp");
 

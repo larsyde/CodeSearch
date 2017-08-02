@@ -32,6 +32,62 @@ Filename: "{app}\indexer.exe"; Parameters: "uninstall"; Flags: runhidden
 Filename: "{app}\webhost.exe"; Parameters: "uninstall"; Flags: runhidden
    
 [Code]
+#ifdef UNICODE
+  #define AW "W"
+#else
+  #define AW "A"
+#endif
+const  
+  LOGON32_LOGON_INTERACTIVE = 2;
+  LOGON32_LOGON_NETWORK = 3;
+  LOGON32_LOGON_BATCH = 4;
+  LOGON32_LOGON_SERVICE = 5;
+  LOGON32_LOGON_UNLOCK = 7;
+  LOGON32_LOGON_NETWORK_CLEARTEXT = 8;
+  LOGON32_LOGON_NEW_CREDENTIALS = 9;
+
+  LOGON32_PROVIDER_DEFAULT = 0;
+  LOGON32_PROVIDER_WINNT40 = 2;
+  LOGON32_PROVIDER_WINNT50 = 3;
+
+  ERROR_SUCCESS = 0;
+  ERROR_LOGON_FAILURE = 1326;
+
+function LogonUser(lpszUsername, lpszDomain, lpszPassword: string;
+  dwLogonType, dwLogonProvider: DWORD; var phToken: THandle): BOOL;
+  external 'LogonUser{#AW}@advapi32.dll stdcall';
+
+var
+  ServerDetailsPage: TInputQueryWizardPage;
+
+function TryLogonUser(const Domain, UserName, Password: string; 
+  var ErrorCode: Longint): Boolean;
+var
+  Token: THandle;
+begin
+  Result := LogonUser(UserName, Domain, Password, LOGON32_LOGON_INTERACTIVE,
+    LOGON32_PROVIDER_DEFAULT, Token);
+  ErrorCode := DLLGetLastError;
+end;
+
+procedure ParseDomainUserName(const Value: string; var Domain,
+  UserName: string);
+var
+  DelimPos: Integer;
+begin
+  DelimPos := Pos('\', Value);
+  if DelimPos = 0 then
+  begin
+    Domain := '.';
+    UserName := Value;
+  end
+  else
+  begin
+    Domain := Copy(Value, 1, DelimPos - 1);
+    UserName := Copy(Value, DelimPos + 1, MaxInt);
+  end;
+end;
+
 var
   ServiceAccountPage: TInputQueryWizardPage;
   TFSAccountPage: TInputQueryWizardPage;
@@ -43,6 +99,41 @@ begin
   Confirm:= False;
   Cancel:= True;
 end;
+
+function NextButtonClick(PageId: Integer): Boolean;
+var
+  Domain: string;
+  UserName: string;
+  Password: string;
+  ErrorCode: Longint;
+begin
+    Result := True;
+    if PageId=102 then
+    begin
+        ParseDomainUserName(ServiceAccountPage.Values[0], Domain, UserName);
+        Password := ServiceAccountPage.Values[1];
+        TryLogonUser(Domain, UserName, Password, ErrorCode);
+        case ErrorCode of
+          ERROR_SUCCESS:
+          begin
+          MsgBox('Successfully validated account credentials', mbInformation, MB_OK);
+          Result := True;
+          end;
+          ERROR_LOGON_FAILURE:
+          begin
+          MsgBox('The user name or password is incorrect', mbError, MB_OK);
+          Result := False;
+          end;
+        else
+          begin
+          MsgBox('Login failed!' + #13#10 + SysErrorMessage(DLLGetLastError),
+          mbError, MB_OK);
+          Result := False;
+          end;
+      end;
+    end;
+end;
+
 
 Procedure CurStepChanged(CurStep: TSetupStep);
 var
@@ -60,9 +151,8 @@ IniFile : String;
 AbortNow : Boolean;
 
 begin 
-    UpdaterServiceName := 'CodeSearch updater service';
-    WebhostServiceName := 'CodeSearch.Webhost.Service';            
- 
+   
+
     {remember: the services get uninstaller and installed again in the Run section higher up}
     if CurStep=ssPostInstall then 
     begin 
@@ -107,8 +197,8 @@ begin
 
   ServiceAccountPage := CreateInputQueryPage(wpSelectDir,
     'Service Credentials', 'The Windows service account to use',
-    'Please enter user name and password.');
-  ServiceAccountPage.Add('User name:', False);
+    'Please enter domain user name and password.');
+  ServiceAccountPage.Add('Domain user name (domain\user):', False);
   ServiceAccountPage.Add('Password:', True);
 
   InfoPage := CreateOutputMsgPage(WpInfoBefore, 'Important information', 'Please read the following information before continuing', 

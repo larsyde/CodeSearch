@@ -10,8 +10,8 @@ echo projectname is %_targetname%
 
 pushd %_solutiondir%
 
-robocopy %_targetname%\%_outdir% output /xf *.log  /r:0  /is /xo
+robocopy %_targetname%\%_outdir% output /xf *.log  /r:0  /is /xo 
 
 popd
 exit 0
- 
+  

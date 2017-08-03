@@ -24,6 +24,5 @@ namespace CodeSearch
         public const string WebConfigBaseName = "web.xml";
         public const string WebConfigPath = @"\lib\source\WEB-INF";
         public const string Port = "8102";
-
     }
 }

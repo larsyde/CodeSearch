@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +9,6 @@ namespace CodeSearch
 {
     public abstract class ExtendedErrorHandler : IDisposable
     {
-
         protected ExtendedErrorHandler()
         {
             ConfigureExceptionHandling();
@@ -23,6 +21,7 @@ namespace CodeSearch
         }
 
         private bool _disposed = false;
+
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed)
@@ -31,7 +30,6 @@ namespace CodeSearch
             }
             if (disposing)
             {
-
             }
             Terminate();
             _disposed = true;
@@ -48,12 +46,11 @@ namespace CodeSearch
             }
             catch (Exception e)
             {
-               
             }
         }
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool SetThreadErrorMode(UInt32 dwNewMode,
+        private static extern bool SetThreadErrorMode(UInt32 dwNewMode,
  out UInt32 lpOldMode);
 
         public enum ErrorModes : uint
@@ -77,7 +74,6 @@ namespace CodeSearch
         private ConsoleEventDelegate _handler;
 
         private readonly IList<Action> _terminationActions = new List<Action>();
-
 
         private delegate bool ConsoleEventDelegate(int eventType);
 

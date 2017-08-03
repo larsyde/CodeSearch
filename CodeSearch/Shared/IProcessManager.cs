@@ -9,7 +9,8 @@ namespace CodeSearch
         void Start();
 
         void Dispose();
-        void StartProcess(ProcessStartInfo processInfo, object cancellationToken, string logger, System.Action postProcess , TimeSpan timeOut);
+
+        void StartProcess(ProcessStartInfo processInfo, object cancellationToken, string logger, System.Action postProcess, TimeSpan timeOut);
 
         void StartProcess(ProcessStartInfo processInfo,
             object cancellationToken);
@@ -30,12 +31,10 @@ namespace CodeSearch
             object cancellationToken,
             string logger,
             Action postProcess);
-      
 
         ManualResetEvent ConnectedToSentryEvent
         {
             get; set;
         }
-
     }
 }

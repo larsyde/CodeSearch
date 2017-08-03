@@ -1,8 +1,7 @@
+using MadMilkman.Ini;
 using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using MadMilkman.Ini;
 
 namespace CodeSearch
 {
@@ -63,10 +62,6 @@ namespace CodeSearch
                 return false;
             }
             return true;
-
-
-
-
         }
     }
 }

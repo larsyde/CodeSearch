@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -14,7 +13,7 @@ namespace CodeSearch
     internal class CodeSearch : ServiceControl, IDisposable
     {
         [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool SetThreadErrorMode(UInt32 dwNewMode,
+        private static extern bool SetThreadErrorMode(UInt32 dwNewMode,
             out UInt32 lpOldMode);
 
         public enum ErrorModes : uint
@@ -44,6 +43,7 @@ namespace CodeSearch
             bool add);
 
         private static Config _configuration;
+
         public static Config Configuration
         {
             get
@@ -52,9 +52,8 @@ namespace CodeSearch
             }
         }
 
-
         [HandleProcessCorruptedStateExceptions]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             try
             {
@@ -62,7 +61,6 @@ namespace CodeSearch
                     1) get all team project collections in parallel
                     1.1) for each, get all projects in parallel
                     1.1.1) for each, get all extensions in parallel
-
 
                 */
                 _configuration = new Config();
@@ -76,7 +74,6 @@ namespace CodeSearch
                     configurator.SetServiceName("CodeSearch.Update.Service");
                     configurator.UseNLog();
                 });
-                
             }
             catch (Exception e)
             {
@@ -85,13 +82,12 @@ namespace CodeSearch
             }
         }
 
-
         public static HostControl TheHostControl { get; private set; } = null;
 
         private void ConfigureExceptionHandling(HostControl hostControl)
         {
             uint oldMode;
-            SetThreadErrorMode((uint) (ErrorModes.SEM_NOGPFAULTERRORBOX | ErrorModes.SEM_FAILCRITICALERRORS | ErrorModes.SEM_NOOPENFILEERRORBOX), out oldMode);
+            SetThreadErrorMode((uint)(ErrorModes.SEM_NOGPFAULTERRORBOX | ErrorModes.SEM_FAILCRITICALERRORS | ErrorModes.SEM_NOOPENFILEERRORBOX), out oldMode);
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
             TaskScheduler.UnobservedTaskException += TaskSchedulerOnUnobservedTaskException;
             _terminationActions.Add(() => TaskScheduler.UnobservedTaskException -= TaskSchedulerOnUnobservedTaskException);
@@ -168,13 +164,11 @@ namespace CodeSearch
             return true;
         }
 
-    
         private Indexer _updater;
         private Thread _updaterThread;
 
-
         private CancellationTokenSource _cancellationTokenSource;
-     
+
         bool ServiceControl.Start(HostControl hostControl)
         {
             "Starting CodeSearch Indexer service".Info("Eventlog");

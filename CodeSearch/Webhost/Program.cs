@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Runtime.ExceptionServices;
 using System.Text.RegularExpressions;
 using System.Threading;
-using CodeSearch;
 using Topshelf;
 
 namespace CodeSearch.WebHost.Console
@@ -17,7 +16,8 @@ namespace CodeSearch.WebHost.Console
 
         private const string _pipeName = "CsWebHostPipe";
 
-        private  CancellationTokenSource _cancellationToken = new CancellationTokenSource();
+        private CancellationTokenSource _cancellationToken = new CancellationTokenSource();
+
         private readonly Lazy<IProcessManager> _processManager = new Lazy<IProcessManager>(() =>
         {
             var p = new ProcessManager(_pipeName);
@@ -70,7 +70,7 @@ namespace CodeSearch.WebHost.Console
                     var before = (from f in files select Tuple.Create(f, File.GetLastWriteTimeUtc(f))).ToArray();
                     _starterThread.Join(TimeSpan.FromSeconds(5.0));
                     var changedFiles = from f in before
-                                       where Regex.IsMatch(f.Item1, @"web[0-9]{1}\.xml") 
+                                       where Regex.IsMatch(f.Item1, @"web[0-9]{1}\.xml")
                                        && File.GetLastWriteTimeUtc(f.Item1) != f.Item2
                                        select f.Item1;
                     if (!changedFiles.Any())
@@ -154,7 +154,7 @@ namespace CodeSearch.WebHost.Console
             _disposed = true;
         }
 
-        private  void StartWebHost(object cancellationToken)
+        private void StartWebHost(object cancellationToken)
         {
             "Starting web host".Info("Eventlog");
             var sw = new Stopwatch();
@@ -178,9 +178,9 @@ namespace CodeSearch.WebHost.Console
                     Arguments = "-jar " + Globals.JettyRunnerJar + $@" --port {Globals.Port}" + " " + Globals.WebDir
                 };
                 _processManager.Value.StartProcess(
-                    processInfo, 
-                    cancellationToken, 
-                    "Main", 
+                    processInfo,
+                    cancellationToken,
+                    "Main",
                     async () =>
                     {
                         try
@@ -188,7 +188,7 @@ namespace CodeSearch.WebHost.Console
                             Thread.Sleep(TimeSpan.FromSeconds(10.0));
                             var s = $"http://localhost:{Globals.Port}/index.jsp";
                             $"Getting initial webpage from {s}".Info(LoggerName);
-                         //   Process.Start(s);
+                            //   Process.Start(s);
                             var hc = new HttpClient();
                             await hc.GetStringAsync(s);
                         }
@@ -219,8 +219,8 @@ namespace CodeSearch.WebHost.Console
         {
             try
             {
-          //      _configuration = new Config();
-           //     _configuration.Init();
+                //      _configuration = new Config();
+                //     _configuration.Init();
                 "Webhost Main".Info();
                 var h = HostFactory.Run(configurator =>
                 {

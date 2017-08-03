@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using NamedPipeWrapper;
 
+using NamedPipeWrapper;
 namespace CodeSearch
 {
     public class ProcessManager : IDisposable, IProcessManager
     {
         private bool _disposed = false;
+
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed)
@@ -34,8 +34,9 @@ namespace CodeSearch
         }
 
         public ManualResetEvent ConnectedToSentryEvent { get; set; }
-        private NamedPipeServer<ProcessDescriptor> _pipeServer; 
+        private NamedPipeServer<ProcessDescriptor> _pipeServer;
         private Process _sentryProcess;
+
         private void Init(string pipeName)
         {
             ConnectedToSentryEvent = new ManualResetEvent(false);
@@ -81,7 +82,7 @@ namespace CodeSearch
             GC.SuppressFinalize(this);
         }
 
-        private readonly IList<Action> _terminationActions = new List<Action>(); 
+        private readonly IList<Action> _terminationActions = new List<Action>();
         private readonly IList<Process> _processes = new List<Process>();
         private readonly object _processListLockingObject = new object();
         private readonly string _pipeName = string.Empty;
@@ -122,9 +123,9 @@ namespace CodeSearch
         }
 
         public void StartProcess(
-            ProcessStartInfo processInfo, 
-            object cancellationToken, 
-            string logger, 
+            ProcessStartInfo processInfo,
+            object cancellationToken,
+            string logger,
             Action postProcess,
             TimeSpan timeOut)
         {
@@ -133,7 +134,7 @@ namespace CodeSearch
             {
                 if (processInfo == null)
                 {
-                       throw new ArgumentNullException($"{nameof(processInfo)} was null");
+                    throw new ArgumentNullException($"{nameof(processInfo)} was null");
                 }
                 var processName = "<unidentified>";
                 var processId = "<N/A>";
@@ -182,11 +183,9 @@ namespace CodeSearch
                 }
                 else
                 {
-
                     processName = process.ProcessName;
                     processId = process.Id.ToString();
                     $"Starting process '{processName}' with id '{processId}' using file '{process.StartInfo.FileName}' and arguments '{process.StartInfo.Arguments ?? "<none>"} in working dir {process.StartInfo.WorkingDirectory}".Info();
-
                 }
                 process.BeginErrorReadLine();
                 process.BeginOutputReadLine();

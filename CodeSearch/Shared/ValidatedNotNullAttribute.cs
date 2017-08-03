@@ -5,7 +5,7 @@ namespace CodeSearch
     /// <summary>
     /// Prevent spurious argument null errors in code analysis
     /// </summary>
-    sealed class ValidatedNotNullAttribute : Attribute
+    internal sealed class ValidatedNotNullAttribute : Attribute
     {
     }
 }

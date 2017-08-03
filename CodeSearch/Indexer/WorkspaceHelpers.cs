@@ -1,8 +1,8 @@
+using Microsoft.TeamFoundation.Client;
+using Microsoft.TeamFoundation.WorkItemTracking.Client;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.TeamFoundation.Client;
-using Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace CodeSearch
 {
@@ -68,6 +68,5 @@ namespace CodeSearch
             $"{nameof(GetWorkspaceName)}: {nameof(projColl)} = {projColl.Name}".Trace();
             return $"{Globals.WorkspacePrefix}_{projColl.GetProjectCollectionName()}_{Environment.MachineName}";
         }
-
     }
 }

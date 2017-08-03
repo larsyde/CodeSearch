@@ -1,23 +1,20 @@
-﻿using System;
+﻿using Microsoft.TeamFoundation.Client;
+using Microsoft.TeamFoundation.Framework.Common;
+using Microsoft.TeamFoundation.VersionControl.Client;
+using Microsoft.TeamFoundation.VersionControl.Common;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
-using Microsoft.TeamFoundation.Client;
-using Microsoft.TeamFoundation.Framework.Common;
-using Microsoft.TeamFoundation.VersionControl.Client;
-using Microsoft.TeamFoundation.VersionControl.Common;
-using StackExchange.Profiling;
 
 namespace CodeSearch
 {
     // TODO: compose with an extendederrorhandler, dont inherit from it
     public class Indexer : ExtendedErrorHandler
     {
-
-
         /*  public static readonly string[] Extensions =
           {
               "txt", "cs", "config", "xml", "sql", "xaml", "manifest", "resx", "sln", "*proj", "wxs",
@@ -25,13 +22,12 @@ namespace CodeSearch
               "CPP", "HPP", "CC", "C++", "HH", "CXX", "HXX", "TXX", "PDF", "", "m", "swift"
           };*/
 
-          public static readonly string[] Extensions =
+        public static readonly string[] Extensions =
 {
   "txt"
 };
 
         private ProcessManager ProcessManager { get; } = new ProcessManager("CSUpdaterPipeTemp");
-
 
         public static Config Configuration
         {
@@ -134,7 +130,6 @@ namespace CodeSearch
             }
         }
 
-
         public void Init()
         {
             try
@@ -167,6 +162,125 @@ namespace CodeSearch
             }
         }
 
+        private string GetWorkspaceName(TfsTeamProjectCollection projColl)
+        {
+            var str = $"{Guid.NewGuid()}_{projColl.GetProjectCollectionName()}";
+            $"workspaceName: {str}".Trace();
+            return str;
+        }
+
+        private Workspace CreateWorkSpace(VersionControlServer vcs, string wsName)
+        {
+            try
+            {
+                if (vcs.DeleteWorkspace(wsName, vcs.AuthorizedUser))
+                {
+                    // TODO log
+                }
+            }
+            catch (Exception e)
+            {
+                $"createWorkspace: {e.Message}".Error();
+            }
+            try
+            {
+                var options = new CreateWorkspaceParameters(wsName)
+                {
+                    WorkspaceOptions = WorkspaceOptions.None,
+                    OwnerName = vcs.AuthorizedUser,
+                    Location = WorkspaceLocation.Server
+                };
+                var workSpace = vcs.CreateWorkspace(options);
+                $"Workspace created: {workSpace.Name}".Trace();
+                return workSpace;
+            }
+            catch (Exception e)
+            {
+                $"createWorkspace: {e.Message}".Error();
+                throw;
+            }
+        }
+
+        private void DropWorkspaces(TfsTeamProjectCollection collection)
+        {
+            try
+            {
+                var vcs = collection.GetService<VersionControlServer>();
+                var wss = vcs.QueryWorkspaces(null, vcs.AuthorizedUser, Environment.MachineName);
+                foreach (var workspace in wss)
+                {
+                    if (!workspace.Delete())
+                    {
+                        $"Failed to delete {workspace.Name}".Error();
+                    }
+                    else
+                    {
+                        $"Deleted {workspace.Name}".Info();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                e.Error();
+                throw;
+            }
+        }
+
+        private void DropMappings(TfsTeamProjectCollection collection)
+        {
+            try
+            {
+                var vcs = collection.GetService<VersionControlServer>();
+                var wss = vcs.QueryWorkspaces(null, vcs.AuthorizedUser, null);
+                var localPath = collection.GetProjectCollectionLocalPath(Globals.TfsRoot);
+                var withPath = wss.Select(workspace => Tuple.Create(workspace, workspace.TryGetWorkingFolderForServerItem(collection.Uri.AbsoluteUri)));
+                foreach (var tuple in withPath)
+                {
+                    if (tuple.Item1 != null && tuple.Item2 != null)
+                    {
+                        $"Dropping {tuple.Item2.LocalItem} for workspace {tuple.Item1.Name}".Info();
+                        tuple.Item1.DeleteMapping(tuple.Item2);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                e.Error();
+            }
+        }
+
+        private Workspace MapWorkspace(Workspace ws, TfsTeamProjectCollection pc)
+        {
+            try
+            {
+                var serverPath = "$/";
+                var localPath = pc.GetProjectCollectionLocalPath(Globals.TfsRoot);
+                $"mapWorkspace: {nameof(serverPath)} = {serverPath}".Trace();
+                $"mapWorkspace: {nameof(localPath)} = {localPath}".Trace();
+                var vcs = pc.GetService<VersionControlServer>();
+                var lws = Workstation.Current.RemoveCachedWorkspaceInfo(vcs);
+                var wss = vcs.QueryWorkspaces(null, vcs.AuthorizedUser, null);
+                foreach (var workspace in wss)
+                {
+                    $"Checking workspace {workspace.Name} for mapping of local path {localPath}".Info();
+                    if (workspace.IsLocalPathMapped(localPath))
+                    {
+                        var wf = workspace.TryGetWorkingFolderForLocalItem(localPath);
+                        workspace.DeleteMapping(wf);
+                        $"Deleted {localPath} mapping from workspace {workspace.Name}".Info();
+                    }
+                }
+
+                ws.Map(serverPath, localPath);
+                return ws;
+            }
+            catch (Exception e)
+            {
+                e.Error();
+            }
+            return null;
+        }
+
         private void DoFullGet()
         {
             try
@@ -177,133 +291,12 @@ namespace CodeSearch
                 var sw = new Stopwatch();
                 sw.Start();
                 var lpc = GetTeamProjectCollections().AsParallel();
-                Func<TfsTeamProjectCollection, string> workspaceName = projColl =>
-                {
-                    var str = $"{Guid.NewGuid()}_{projColl.GetProjectCollectionName()}";
-                    $"workspaceName: {str}".Trace();
-                    return str;
-                };
-                Func<VersionControlServer, string, Workspace> createWorkSpace = (vcs,
-                    wsName) =>
-                {
-                    try
-                    {
-                        if (vcs.DeleteWorkspace(wsName, vcs.AuthorizedUser))
-                        {
-                            // TODO log
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        $"createWorkspace: {e.Message}".Error();
-                    }
-                    try
-                    {
-
-                        var options = new CreateWorkspaceParameters(wsName)
-                        {
-                            WorkspaceOptions = WorkspaceOptions.None,
-                            OwnerName = vcs.AuthorizedUser,
-                            Location = WorkspaceLocation.Server
-                        };
-                        var workSpace = vcs.CreateWorkspace(options);
-                        $"Workspace created: {workSpace.Name}".Trace();
-                        return workSpace;
-                    }
-                    catch (Exception e)
-                    {
-                        $"createWorkspace: {e.Message}".Error();
-                        throw;
-                    }
-                };
-
-                Action<TfsTeamProjectCollection> dropWorkspaces = collection =>
-                {
-                    try
-                    {
-                        var vcs = collection.GetService<VersionControlServer>();
-                        var wss = vcs.QueryWorkspaces(null, vcs.AuthorizedUser, Environment.MachineName);
-                        foreach (var workspace in wss)
-                        {
-                            if (!workspace.Delete())
-                            {
-                                $"Failed to delete {workspace.Name}".Error();
-                            }
-                            else
-                            {
-                                $"Deleted {workspace.Name}".Info();
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        e.Error();
-                        throw;
-                    }
-                };
-
-                Action<TfsTeamProjectCollection> dropMappings = (collection) =>
-                {
-                    try
-                    {
-
-                        var vcs = collection.GetService<VersionControlServer>();
-                        var wss = vcs.QueryWorkspaces(null, vcs.AuthorizedUser, null);
-                        var localPath = collection.GetProjectCollectionLocalPath(Globals.TfsRoot);
-                        var withPath = wss.Select(workspace => Tuple.Create(workspace, workspace.TryGetWorkingFolderForServerItem(collection.Uri.AbsoluteUri)));
-                        foreach (var tuple in withPath)
-                        {
-                            if (tuple.Item1 != null && tuple.Item2 != null)
-                            {
-                                $"Dropping {tuple.Item2.LocalItem} for workspace {tuple.Item1.Name}".Info();
-                                tuple.Item1.DeleteMapping(tuple.Item2);
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        e.Error();
-                    }
-                };
-
-                Func<Workspace, TfsTeamProjectCollection, Workspace> mapWorkspace = (ws,
-                    pc) =>
-                {
-                    try
-                    {
-                        var serverPath = "$/";
-                        var localPath = pc.GetProjectCollectionLocalPath(Globals.TfsRoot);
-                        $"mapWorkspace: {nameof(serverPath)} = {serverPath}".Trace();
-                        $"mapWorkspace: {nameof(localPath)} = {localPath}".Trace();
-                        var vcs = pc.GetService<VersionControlServer>();
-                        var lws = Workstation.Current.RemoveCachedWorkspaceInfo(vcs);
-                        var wss = vcs.QueryWorkspaces(null, vcs.AuthorizedUser, null);
-                        foreach (var workspace in wss)
-                        {
-                            $"Checking workspace {workspace.Name} for mapping of local path {localPath}".Info();
-                            if (workspace.IsLocalPathMapped(localPath))
-                            {
-                                var wf = workspace.TryGetWorkingFolderForLocalItem(localPath);
-                                workspace.DeleteMapping(wf);
-                                $"Deleted {localPath} mapping from workspace {workspace.Name}".Info();
-                            }
-                        }
-
-                        ws.Map(serverPath, localPath);
-                        return ws;
-                    }
-                    catch (Exception e)
-                    {
-                        e.Error();
-                    }
-                    return null;
-                };
 
                 if (CancellationToken.IsCancellationRequested)
                 {
                     return;
                 }
-                // get the workspaces for this user on this machine and their working folders, if any, for the project collection they belong to 
+                // get the workspaces for this user on this machine and their working folders, if any, for the project collection they belong to
                 var pcsAndAllTheirWorkspaces =
                     from pc in lpc.AsParallel()
                     let vcs = pc.GetService<VersionControlServer>()
@@ -324,8 +317,8 @@ namespace CodeSearch
                 var pcsAndMappedWorkspaces =
                     from a in pcsAndAllTheirWorkspaces
                     let workspaceAndFolder = a.WorkspaceAndWorkingFolderList.SingleOrDefault(tuple => tuple.Item2 != null)
-                    let name = workspaceAndFolder?.Item1.Name ?? workspaceName(a.ProjectCollection)
-                    let workspace = workspaceAndFolder?.Item1 ?? mapWorkspace(createWorkSpace(a.VersionControlServer, name), a.ProjectCollection)
+                    let name = workspaceAndFolder?.Item1.Name ?? GetWorkspaceName(a.ProjectCollection)
+                    let workspace = workspaceAndFolder?.Item1 ?? MapWorkspace(CreateWorkSpace(a.VersionControlServer, name), a.ProjectCollection)
                     let workingFolder = workspaceAndFolder?.Item2 ?? workspace.TryGetWorkingFolderForLocalItem(a.LocalPath)
                     select new
                     {
@@ -443,7 +436,6 @@ namespace CodeSearch
                 throw;
             }
         }
-
 
         private void DoFullIndex()
         {

@@ -8,7 +8,6 @@ namespace CodeSearch
     /// </summary>
     public static class ValidationExtensions
     {
-
         /// <summary>
         /// Generic check for null value with caller information
         /// </summary>
@@ -30,7 +29,6 @@ namespace CodeSearch
             if (parameter != null)
                 return;
             throw new ArgumentNullException(Checks.Format<T>(optionalText, memberName, sourceFilePath, sourceLineNumber));
-
         }
 
         /// <summary>
@@ -52,10 +50,6 @@ namespace CodeSearch
             if (parameter != null)
                 return;
             throw new ArgumentNullException(Checks.Format<string>(optionalText, memberName, sourceFilePath, sourceLineNumber));
-
-
         }
-
-
     }
 }

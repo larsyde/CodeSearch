@@ -1,14 +1,14 @@
-﻿using System;
+﻿using NamedPipeWrapper;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using NamedPipeWrapper;
-using NLog;
-using NLog.Config;
-using NLog.Targets;
 
 namespace CodeSearch
 {
@@ -24,11 +24,9 @@ namespace CodeSearch
         }
     }
 
-
     public class Sentry : IDisposable
     {
         private readonly AutoResetEvent _wakeUpEvent = new AutoResetEvent(false);
-
 
         private DateTime _lastInfoTime = DateTime.UtcNow;
 
@@ -50,7 +48,6 @@ namespace CodeSearch
         public string PipeName { get; }
 
         public IList<ProcessDescriptor> ProcessDescriptors { get; private set; }
-
 
         public bool Go()
         {
@@ -91,7 +88,7 @@ namespace CodeSearch
                     {
                         $"Error: sentry waited too long for timer wakeup".Log();
                     }
-                    if (_wakeCount%60 == 0)
+                    if (_wakeCount % 60 == 0)
                     {
                         // dump process and thread information
                         GetProcessAndThreadInformation().Log();
@@ -105,12 +102,13 @@ namespace CodeSearch
             finally
             {
                 Dispose();
-                Environment.Exit(0);  
+                Environment.Exit(0);
             }
             return false;
         }
 
         private bool _disposed = false;
+
         private void Dispose(bool disposing)
         {
             if (_disposed)
@@ -151,7 +149,6 @@ namespace CodeSearch
             GC.SuppressFinalize(this);
         }
 
-
         private string GetProcessAndThreadInformation()
         {
             var elapsed = DateTime.UtcNow - _lastInfoTime;
@@ -163,13 +160,13 @@ namespace CodeSearch
             {
                 sb.AppendLine($"- Parent Id {ParentProcess.Id} and name {ParentProcess.ProcessName}");
                 var pt = from p in Process.GetProcesses()
-                    let t = p.Threads
-                    where ProcessDescriptors.Any(descriptor => descriptor.ProcessId == p.Id || p.Id == ParentProcessId)
-                    select new
-                    {
-                        p,
-                        t
-                    };
+                         let t = p.Threads
+                         where ProcessDescriptors.Any(descriptor => descriptor.ProcessId == p.Id || p.Id == ParentProcessId)
+                         select new
+                         {
+                             p,
+                             t
+                         };
 
                 foreach (var procAndThreads in pt)
                 {
@@ -187,9 +184,9 @@ namespace CodeSearch
             {
                 _lastInfoTime = DateTime.UtcNow;
                 sb.AppendLine($"Total processor time (parent + children): {totalProcTime.TotalSeconds:F2} secs");
-                sb.AppendLine($"Per core ({Environment.ProcessorCount}) average: {totalProcTime.TotalSeconds/Environment.ProcessorCount:F2} secs");
+                sb.AppendLine($"Per core ({Environment.ProcessorCount}) average: {totalProcTime.TotalSeconds / Environment.ProcessorCount:F2} secs");
                 sb.AppendLine($"Time since previous stat: {elapsed.TotalSeconds:F2} secs");
-                sb.AppendLine($"Percentage used (parent + children): {totalProcTime.TotalSeconds/Environment.ProcessorCount/elapsed.TotalSeconds:p}");
+                sb.AppendLine($"Percentage used (parent + children): {totalProcTime.TotalSeconds / Environment.ProcessorCount / elapsed.TotalSeconds:p}");
                 sb.AppendLine("                    ---===---");
             }
             return sb.ToString();

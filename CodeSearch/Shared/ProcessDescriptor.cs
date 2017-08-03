@@ -3,9 +3,10 @@ using System;
 namespace CodeSearch
 {
     [Serializable]
-    public class ProcessDescriptor 
+    public class ProcessDescriptor
     {
-        public int ProcessId {
+        public int ProcessId
+        {
             get; set;
         }
     }

@@ -208,9 +208,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Indexer.cs" />
+    <Compile Include="TfsHelpers.cs" />
     <Compile Include="WorkspaceHelpers.cs" />
   </ItemGroup>
   <ItemGroup>

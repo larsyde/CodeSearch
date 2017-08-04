@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace CodeSearch
 {
-    public abstract class ExtendedErrorHandler : IDisposable
+    public class ExtendedErrorHandler : IDisposable
     {
-        protected ExtendedErrorHandler()
+        public ExtendedErrorHandler()
         {
             ConfigureExceptionHandling();
         }

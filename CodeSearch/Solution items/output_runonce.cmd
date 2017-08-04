@@ -6,6 +6,7 @@ pushd %_solutiondir%
 
 del /f/s/q output\*.*
 
+
 robocopy ".\solution items" output nlog.config /xf *.log  /r:0  /is
 robocopy ".\solution items" output install.cmd /xf *.log  /r:0  /is
 

@@ -1,10 +1,10 @@
+using NamedPipeWrapper;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
-using NamedPipeWrapper;
 namespace CodeSearch
 {
     public class ProcessManager : IDisposable, IProcessManager

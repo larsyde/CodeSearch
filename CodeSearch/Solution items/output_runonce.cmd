@@ -5,7 +5,7 @@ echo solutiondir is %_solutiondir%
 pushd %_solutiondir%
 
 del /f/s/q output\*.*
-
+git clean -q -f
 
 robocopy ".\solution items" output nlog.config /xf *.log  /r:0  /is
 robocopy ".\solution items" output install.cmd /xf *.log  /r:0  /is

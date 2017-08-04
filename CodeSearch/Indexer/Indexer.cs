@@ -10,8 +10,29 @@ using System.Threading;
 
 namespace CodeSearch
 {
-    public class Indexer
+    public class Indexer : IDisposable
     {
+        private bool _disposed = false;
+        private void Dispose(bool disposing)
+        {
+            if (_disposed)
+            {
+                return;
+            }
+            if (disposing)
+            {
+                
+            }
+            _disposed = true;
+        }
+
+        public virtual void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            Dispose(true);
+        }
+
+
         /*  public static readonly string[] Extensions =
           {
               "txt", "cs", "config", "xml", "sql", "xaml", "manifest", "resx", "sln", "*proj", "wxs",

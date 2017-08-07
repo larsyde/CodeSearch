@@ -14,7 +14,7 @@ namespace CodeSearch.WebHost.Console
     {
         public const string LoggerName = @"Webhost";
 
-        private const string _pipeName = "CsWebHostPipe";
+        private const string _pipeName = "CodeSearchWebhostPipe";
 
         private CancellationTokenSource _cancellationToken = new CancellationTokenSource();
 
@@ -55,9 +55,6 @@ namespace CodeSearch.WebHost.Console
         {
             try
             {
-#if DEBUG
-                _starterThread.Join(TimeSpan.FromSeconds(10.0));
-#endif
                 $"{nameof(ThreadStarter)} start".Info(LoggerName);
                 var p = Environment.CurrentDirectory + Globals.WebConfigPath;
                 var files =
@@ -188,7 +185,6 @@ namespace CodeSearch.WebHost.Console
                             Thread.Sleep(TimeSpan.FromSeconds(10.0));
                             var s = $"http://localhost:{Globals.Port}/index.jsp";
                             $"Getting initial webpage from {s}".Info(LoggerName);
-                            //   Process.Start(s);
                             var hc = new HttpClient();
                             await hc.GetStringAsync(s);
                         }
@@ -226,7 +222,7 @@ namespace CodeSearch.WebHost.Console
                 {
                     configurator.Service<CsWebHost>();
                     configurator.RunAsNetworkService();
-                    configurator.SetDescription("Serves out web pages with code search content");
+                    configurator.SetDescription("Serves out web pages with CodeSearch content");
                     configurator.SetDisplayName(Globals.WebhostDisplayName);
                     configurator.SetServiceName(Globals.WebhostServiceName);
                     configurator.UseNLog();

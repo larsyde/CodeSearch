@@ -52,7 +52,7 @@ namespace CodeSearch
         {
         }
 
-        private ProcessManager ProcessManager { get; } = new ProcessManager("CSUpdaterPipeTemp");
+        private ProcessManager ProcessManager { get; } = new ProcessManager("CodeSearchIndexerPipe");
 
         public static Config Configuration
         {
@@ -162,7 +162,7 @@ namespace CodeSearch
                 Configuration = new Config();
                 Configuration.Init();
                 TfsUri = new Uri(Configuration.ServerUrl); //new Uri(@"http://localhost:8088/tfs/");
-                var credentials = new NetworkCredential(Configuration.TfsUserName, Configuration.TfsPassword); //new NetworkCredential("milestone\\lay", "Nors1975!");
+                var credentials = new NetworkCredential(Configuration.TfsUserName, Configuration.TfsPassword); 
                 ConfigurationServer = TfsConfigurationServerFactory.GetConfigurationServer(TfsUri);
                 ConfigurationServer.Credentials = credentials;
                 ConfigurationServer.Authenticate();
@@ -229,7 +229,7 @@ namespace CodeSearch
                     from pp in p.ProjectCollection.GetTeamProjects()
                     let sp = pp.GetProjectServerPath(p.ProjectCollection)
                     let wf = p.Workspace.TryGetWorkingFolderForServerItem(sp)
-                    where wf.LocalItem.ToLowerInvariant().Contains(Configuration.SourceRoot.ToLowerInvariant())
+                    where String.IsNullOrEmpty(Configuration.SourceRoot) || wf.LocalItem.ToLowerInvariant().Contains(Configuration.SourceRoot.ToLowerInvariant())
                     select new
                     {
                         ProjectCollection = p,
@@ -310,8 +310,8 @@ namespace CodeSearch
                         processInfo.EnvironmentVariables["JAVA_TOOL_OPTIONS"] = "-Xmx2048m -Xms256m";
                         processInfo.WorkingDirectory = Environment.CurrentDirectory;
                         processInfo.FileName = Globals.JavaExe;
-                        var sPath = Path.Combine(Globals.TfsRoot, Configuration.SourceRoot);
-                        processInfo.Arguments = $"-jar {Globals.OpenGrokJar} -W {Globals.ConfigurationXml} -m 256 -e -i d:packages -C -P -c {Globals.CTags} -s {sPath} -d {Globals.DataRoot}";
+                        var path = Path.Combine(Globals.TfsRoot, Configuration.SourceRoot);
+                        processInfo.Arguments = $"-jar {Globals.OpenGrokJar} -W {Globals.ConfigurationXml} -m 256 -e -i d:packages -C -P -c {Globals.CTags} -s {path} -d {Globals.DataRoot}";
                         ProcessManager.StartProcess(processInfo, cs, "Indexer");
                     }
                     );

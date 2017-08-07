@@ -45,7 +45,7 @@ namespace CodeSearch
             {
                 if (vcs.DeleteWorkspace(wsName, vcs.AuthorizedUser))
                 {
-                    // TODO log
+                    $"Successfully deleted workspace {wsName}".Info();
                 }
             }
             catch (Exception e)

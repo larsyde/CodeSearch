@@ -36,12 +36,7 @@ namespace CodeSearch
                 ;
             _iniSettings.Load(fileName);
 
-            SourceRoot = _iniSettings.Sections["General"].Keys["SourceRoot"].Value;
-            if (string.IsNullOrEmpty(SourceRoot))
-            {
-                $"{nameof(SourceRoot)} was null or empty".Error();
-                return false;
-            }
+            SourceRoot = _iniSettings.Sections["General"]?.Keys["SourceRoot"]?.Value ?? string.Empty;
             TfsUserName = _iniSettings.Sections["Tfs"].Keys["Username"].Value;
             if (string.IsNullOrEmpty(TfsUserName))
             {

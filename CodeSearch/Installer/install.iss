@@ -205,7 +205,10 @@ begin
   ServiceAccountPage.Add('Password:', True);
 
   InfoPage := CreateOutputMsgPage(WpInfoBefore, 'Important information', 'Please read the following information before continuing', 
-  'CodeSearch will store code and index data on your computer in the same place that the application is installed. This data will have to be removed manually after uninstallation.');
+  'Be aware that CodeSearch will store code and index data on your computer in the same place that the application is installed. This data will have to be removed manually after uninstallation.' + #13#10 + #13#10 +
+  'CodeSearch works by getting all files from the TFS server you specify, and then building a searchable index from that.' + #13#10 + #1310 + 
+  'Both the files and the index may take up significant space depending on the size of your TFS repository, and building the initial index may also take significant time, again dependent on the size of your repository but typically several hours.' + #13#10 + #13#10 +
+  'Initial indexing will begin immediately after successful install, and results will be searchable when index build is complete. You can access the search form at http://<servername>:8102 and begin your querying from there, but be aware that results will not be complete before indexing is.');
 
 
 end;

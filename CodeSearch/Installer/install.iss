@@ -12,7 +12,7 @@ OutputBaseFilename=Codesearch
 UninstallDisplayIcon={app}\Indexer.exe
 AppPublisher=Codesearch
 AppVerName=Codesearch 1.0
-LicenseFile=eula.txt
+LicenseFile=eula.rtf
        
 [Files]
 Source: "*.*"; DestDir: "{app}"; Excludes: "*.log, *.pdb, *.xml, *.ini"; Flags: recursesubdirs replacesameversion onlyifdoesntexist

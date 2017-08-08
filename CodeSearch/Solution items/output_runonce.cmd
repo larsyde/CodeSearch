@@ -9,7 +9,7 @@ git clean -q -f
 
 robocopy ".\solution items" output nlog.config /r:0  /is
 robocopy ".\solution items" output install.cmd /r:0  /is
-robocopy ".\solution items" output eula.txt /r:0  /is
+robocopy ".\solution items" output eula.rtf /r:0  /is
 
 robocopy Dependencies\ctags58\ output\bin ctags.exe /xf *.log  /r:0  /is 
 robocopy Dependencies\jetty-runner-9.3.9.v20160517  output\lib  /xf *.log  /r:0  /is 

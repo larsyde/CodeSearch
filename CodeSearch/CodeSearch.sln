@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution 
 		Solution items\32x32.ico = Solution items\32x32.ico
 		Solution items\48x48.ico = Solution items\48x48.ico
 		Solution items\64x64.ico = Solution items\64x64.ico
+		Solution items\eula.txt = Solution items\eula.txt
 		Solution items\icon.ico = Solution items\icon.ico
 		Solution items\install.cmd = Solution items\install.cmd
 		Solution items\nlog.config = Solution items\nlog.config

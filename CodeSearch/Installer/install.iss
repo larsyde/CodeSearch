@@ -12,6 +12,7 @@ OutputBaseFilename=Codesearch
 UninstallDisplayIcon={app}\Indexer.exe
 AppPublisher=Codesearch
 AppVerName=Codesearch 1.0
+LicenseFile=eula.txt
        
 [Files]
 Source: "*.*"; DestDir: "{app}"; Excludes: "*.log, *.pdb, *.xml, *.ini"; Flags: recursesubdirs replacesameversion onlyifdoesntexist
@@ -28,6 +29,8 @@ Filename: "{app}\indexer.exe"; Parameters: "start"; Flags: runhidden
 Filename: "{app}\webhost.exe"; Parameters: "start"; Flags: runhidden
 
 [Uninstallrun]
+Filename: "{app}\indexer.exe"; Parameters: "stop"; Flags: runhidden
+Filename: "{app}\webhost.exe"; Parameters: "stop"; Flags: runhidden
 Filename: "{app}\indexer.exe"; Parameters: "uninstall"; Flags: runhidden
 Filename: "{app}\webhost.exe"; Parameters: "uninstall"; Flags: runhidden
    
@@ -203,6 +206,7 @@ begin
 
   InfoPage := CreateOutputMsgPage(WpInfoBefore, 'Important information', 'Please read the following information before continuing', 
   'CodeSearch will store code and index data on your computer in the same place that the application is installed. This data will have to be removed manually after uninstallation.');
+
 
 end;
 

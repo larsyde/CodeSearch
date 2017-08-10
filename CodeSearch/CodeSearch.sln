@@ -24,6 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution 
 		Solution items\NLog.xsd = Solution items\NLog.xsd
 		Solution items\output_runmany.cmd = Solution items\output_runmany.cmd
 		Solution items\output_runonce.cmd = Solution items\output_runonce.cmd
+		Solution items\readme.txt = Solution items\readme.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{A21D3E6F-ED31-4F04-8C88-7FA159518311}"

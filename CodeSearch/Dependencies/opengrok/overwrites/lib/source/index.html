@@ -21,7 +21,7 @@
 $(document).ready(function(){
     $('#luckybutton').click(function(e) {
         var inputvalue = $("#input").val();
-        window.location.replace("http://" + location.hostname + ":8102" + "/search?defs=&refs=&path=main/&hist=&type=&project=AllShared&project=Automation&project=BuildTeam&project=Consultancy&project=DriverDB&project=EventTeam&project=Explorer&project=License&project=MIPSDK&project=Marketing&project=SMS&project=WEB&project=XPCO&project=XPE&project=XPMO&project=XPSC&q="+inputvalue);
+        window.location.replace("http://" + location.hostname + ":8102" + "/search?q="+inputvalue);
   });
 });
 

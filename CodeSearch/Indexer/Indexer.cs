@@ -13,6 +13,7 @@ namespace CodeSearch
     public class Indexer : IDisposable
     {
         private bool _disposed = false;
+
         private void Dispose(bool disposing)
         {
             if (_disposed)
@@ -21,7 +22,6 @@ namespace CodeSearch
             }
             if (disposing)
             {
-                
             }
             _disposed = true;
         }
@@ -32,18 +32,12 @@ namespace CodeSearch
             Dispose(true);
         }
 
-
-          public static readonly string[] Extensions =
-          {
+        public static readonly string[] Extensions =
+        {
               "txt", "cs", "config", "xml", "sql", "xaml", "manifest", "resx", "sln", "*proj", "wxs",
               "java", "mak", "fakes", "*html", "*js", "*css", "C", "H", "rc", "log",
               "CPP", "HPP", "CC", "C++", "HH", "CXX", "HXX", "TXX", "PDF", "", "m", "swift"
           };
-
- /*       public static readonly string[] Extensions =
-{
-  "txt"
-};*/
 
         private readonly ExtendedErrorHandler _extendedErrorHandler = new ExtendedErrorHandler();
         private TfsHelpers _tfsHelpers;
@@ -162,7 +156,7 @@ namespace CodeSearch
                 Configuration = new Config();
                 Configuration.Init();
                 TfsUri = new Uri(Configuration.ServerUrl); //new Uri(@"http://localhost:8088/tfs/");
-                var credentials = new NetworkCredential(Configuration.TfsUserName, Configuration.TfsPassword); 
+                var credentials = new NetworkCredential(Configuration.TfsUserName, Configuration.TfsPassword);
                 ConfigurationServer = TfsConfigurationServerFactory.GetConfigurationServer(TfsUri);
                 ConfigurationServer.Credentials = credentials;
                 ConfigurationServer.Authenticate();

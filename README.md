@@ -7,7 +7,7 @@ CodeSearch will connect to a TFS repository of your designation, and will get al
 
 ## Installation
 
-Build the solution. The installer project will generate "codesearch.exe" under the Installation subfolder, and you can run it from there.
+Build the solution. The installer project will generate "codesearch.exe" under the Installer subfolder, and you can run it from there.
 The installer will add two Windows services to your host computer: Codesearch Indexer Service and Codesearch Webhost Service. These can be run and 
 restarted individually, and will update indices and serve query results, respectively.
 

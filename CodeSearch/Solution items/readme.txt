@@ -21,6 +21,3 @@ once the initial index is built.
 To access CS logs, go to the "logs" subfolder under the installation directory.
 To access CS services, open "services.msc" from the Windows command prompt and look for "CodeSearch Indexer Service", which gets TFS files and updates indices, and "CodeSearch Webhost Service" which serves our the search results
 and hosts the web forms. These services can be restarted and run independently.
-
-For further questions, please contact the author at codesearchtfs@gmail.com
-

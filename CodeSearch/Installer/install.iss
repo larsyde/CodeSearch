@@ -2,7 +2,7 @@
 
 [Setup]
 AppName=Codesearch
-AppVersion=0.9
+AppVersion=1.0
 AllowRootDirectory=Yes
 DefaultDirName={pf}\Codesearch
 DefaultGroupName=Codesearch
@@ -202,14 +202,14 @@ begin
     'Please enter user name and password.');
   TFSAccountPage.Add('User name:', False);
   TFSAccountPage.Add('Password:', True);
-  TFSAccountPage.Values[0] := 'BuildTFSSpider'
-  TFSAccountPage.Values[1] := 'hj7hqzqzATS2vN8WBG3q'
+  TFSAccountPage.Values[0] := ''
+  TFSAccountPage.Values[1] := ''
  
   TFSServerPage := CreateInputQueryPage(wpSelectDir,
     'Team Foundation Server', 'TFS server',
     'Please enter a valid TFS server URL.');
   TFSServerPage.Add('TFS Server:', False);
-  TFSServerPage.Values[0] := 'http://tfsserver:8080/tfs'
+  TFSServerPage.Values[0] := ''
 
   ServiceAccountPage := CreateInputQueryPage(wpSelectDir,
     'Service Credentials', 'The Windows service account to use',
@@ -222,7 +222,7 @@ begin
   'Both the files and the index may take up significant space depending on the size of your TFS repository, and building the initial index may also take significant time, again dependent on the size of your repository but typically several hours.' + #13#10 + #13#10 +
   'Initial indexing will begin immediately after successful install, and results will be searchable when index build is complete. You can access the search form at http://<servername>:8102 and begin your querying from there, but be aware that results will not be complete before indexing is.' + #13#10 + #13#10 +
   'Also be aware that CodeSearch will store code and index data on your computer in the same place that the application is installed. This data will have to be removed manually after uninstallation.' + #13#10 + #13#10
-  'Further details can be found in the readme.txt in the installation directory, or by contacting the author at codesearchtfs@gmail.com');
+  'Further details can be found in the readme.txt in the installation directory');
   
 
 end;

@@ -12,7 +12,7 @@ OutputBaseFilename=Codesearch
 UninstallDisplayIcon={app}\Indexer.exe
 AppPublisher=Codesearch
 AppVerName=Codesearch 1.0
-LicenseFile=eula.rtf
+LicenseFile=license.txt
        
 [Files]
 Source: "*.*"; DestDir: "{app}"; Excludes: "*.log, *.pdb, *.xml, *.ini"; Flags: recursesubdirs replacesameversion onlyifdoesntexist
@@ -222,7 +222,7 @@ begin
   'Both the files and the index may take up significant space depending on the size of your TFS repository, and building the initial index may also take significant time, again dependent on the size of your repository but typically several hours.' + #13#10 + #13#10 +
   'Initial indexing will begin immediately after successful install, and results will be searchable when index build is complete. You can access the search form at http://<servername>:8102 and begin your querying from there, but be aware that results will not be complete before indexing is.' + #13#10 + #13#10 +
   'Also be aware that CodeSearch will store code and index data on your computer in the same place that the application is installed. This data will have to be removed manually after uninstallation.' + #13#10 + #13#10
-  'Further details can be found in the readme.txt in the installation directory.');
+  'Further details can be found in the readme.txt in the installation directory, or by contacting the author at codesearchtfs@gmail.com');
   
 
 end;

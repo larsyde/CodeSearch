@@ -16,7 +16,7 @@ Logs are in the Logs subfolder under the installation directory.
 
 ## Usage
 
-Access search form at http://<servername>:8102/ and submit your query
+Access search form at http://servername.:8102/ and submit your query
 
 ## Contributing
 

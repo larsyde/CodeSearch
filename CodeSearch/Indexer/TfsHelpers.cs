@@ -142,7 +142,7 @@ namespace CodeSearch
                             {
                                 workspace.DeleteMapping(wf);
                             }
-                            catch (Exception e)
+                            catch (Exception e) 
                             {
                                 $"Exception in {nameof(MapWorkspace)} while deleting mapping".Error();
                             }

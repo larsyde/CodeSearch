@@ -11,7 +11,7 @@ Build the solution. The installer project will generate "codesearch.exe" under t
 The installer will add two Windows services to your host computer: Codesearch Indexer Service and Codesearch Webhost Service. These can be run and 
 restarted individually, and will update indices and serve query results, respectively.
 
-The main search form can be accessed at http://<servername>:8102/ after successful installation.
+The main search form can be accessed at http://servername:8102/ after successful installation.
 Logs are in the Logs subfolder under the installation directory.
 
 ## Usage

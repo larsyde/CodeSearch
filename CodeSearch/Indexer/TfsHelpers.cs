@@ -136,7 +136,17 @@ namespace CodeSearch
                     if (workspace.IsLocalPathMapped(localPath))
                     {
                         var wf = workspace.TryGetWorkingFolderForLocalItem(localPath);
-                        workspace.DeleteMapping(wf);
+                        if (wf != null)
+                        {
+                            try
+                            {
+                                workspace.DeleteMapping(wf);
+                            }
+                            catch (Exception e)
+                            {
+                                $"Exception in {nameof(MapWorkspace)} while deleting mapping".Error();
+                            }
+                        }
                         $"Deleted {localPath} mapping from workspace {workspace.Name}".Info();
                     }
                 }

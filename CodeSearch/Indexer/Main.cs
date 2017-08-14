@@ -63,6 +63,7 @@ namespace CodeSearch
                     1.1.1) for each, get all extensions in parallel
 
                 */
+                $"Initializing indexer".Info();
                 _configuration = new Config();
                 _configuration.Init();
                 HostFactory.Run(configurator =>

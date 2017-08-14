@@ -39,6 +39,7 @@ namespace CodeSearch
 
         private void Init(string pipeName)
         {
+            $"Initializing pipe '{pipeName}'".Info();
             ConnectedToSentryEvent = new ManualResetEvent(false);
             _pipeServer = new NamedPipeServer<ProcessDescriptor>(pipeName);
             _pipeServer.ClientConnected += connection =>
@@ -89,6 +90,7 @@ namespace CodeSearch
 
         public ProcessManager(string pipeName)
         {
+            $"Constructing ProcessManager: pipename = {pipeName}".Info();
             _pipeName = pipeName;
         }
 

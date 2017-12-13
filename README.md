@@ -3,7 +3,7 @@
 CodeSearch
 
 ## Purpose
-CodeSearch will connect to a TFS repository of your designation, and will get all files that match a predefined set of extensions from all team project collections in that repo. It will then build queryable indices over the whole fileset to enable cross-repo searches using Lucene syntax.
+CodeSearch will connect to the TFS server that you point it at, and will get all files that match a predefined set of extensions from all team project collections in that repo. It will then build queryable indices over the whole fileset to enable cross-repo searches using Lucene syntax.
 
 ## Installation
 
